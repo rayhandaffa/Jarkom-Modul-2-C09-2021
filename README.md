@@ -1,4 +1,4 @@
-# Jaringan Komputer C-XX (2021)
+# Jaringan Komputer C-09 (2021)
 Laporan Resmi Jaringan Komputer Modul 2 - DNS and Web Server
 
 NRP              | Nama
