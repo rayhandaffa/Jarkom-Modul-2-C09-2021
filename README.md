@@ -41,31 +41,67 @@ NRP              | Nama
 ### Soal
 *Untuk memperlancar komunikasi Luffy dan rekannya, dibuatkan subdomain melalui Water7 dengan nama **general.mecha.franky.yyy.com** dengan alias **www.general.mecha.franky.yyy.com** yang mengarah ke Skypie(7).*
 ### Jawaban
-
+Pada file `/etc/bind/delegasi/mecha.franky.com` ditambahkan konfigurasi subdomain sebagai berikut.
+```
+general         IN      A       192.188.2.4 ; IP Skypie
+www.general     IN      A       192.188.2.4 ; IP Skypie
+```
 # Nomor 8
 ### Soal
 *(8) Setelah melakukan konfigurasi server, maka dilakukan konfigurasi Webserver. Pertama dengan webserver **www.franky.yyy.com**. Pertama, luffy membutuhkan webserver dengan DocumentRoot pada /var/www/franky.yyy.com.*
 ### Jawaban
-
+Pada Script di Web Server Skypie dibuatkan directory baru dengan perintah `mkdir /var/www/franky.C09.com`. Lalu pada konfigurasi Apache di file `/etc/apache2/sites-available/franky.C09.com.conf` ditambahkan konfigurasi `DocumentRoot /var/www/franky.C09.com`.
 # Nomor 9
 ### Soal
 *(9) Setelah itu, Luffy juga membutuhkan agar url www.franky.yyy.com/index.php/home dapat menjadi menjadi www.franky.yyy.com/home.*
 ### Jawaban
-
+Dilakukan konfigurasi pada file /.htaccess untuk melakukan *rewrite* menggunakan **REGEX** dengan konfigurasi berikut.
+```
+ RewriteEngine On
+ RewriteCond %{REQUEST_FILENAME} !-d
+ RewriteRule ^([^\.]+)$ index.php/$1 [NC,L]
+```
+Dengan `RewriteCond %{REQUEST_FILENAME} !-d` berarti melakukan *rewrite* ketika kondisi request file dan tidak boleh sebuah direktori. selanjutnya `RewriteRule ^([^\.]+)$ index.php/$1 [NC,L]` merupakan aturan **REGEX**-nya, dimana `NC` berarti *Non Case Sensitive* dan `L` berarti ketika kondisi `index.php/$1` maka `rewrite rule tidak berjalan`.
 # Nomor 10
 ### Soal
 *Setelah itu, pada subdomain **www.super.franky.yyy.com**, Luffy membutuhkan penyimpanan aset yang memiliki DocumentRoot pada /var/www/super.franky.yyy.com.*
 ### Jawaban
-
+ada Script di Web Server Skypie dibuatkan directory baru dengan perintah `mkdir /var/www/super.franky.C09`. Lalu pada konfigurasi Apache di file `/etc/apache2/sites-available/super.franky.C09.com.conf` ditambahkan konfigurasi `DocumentRoot /var/www/super.franky.C09`.
 # Nomor 11
 ### Soal
 *(11) Akan tetapi, pada folder /public, Luffy ingin hanya dapat melakukan directory listing saja.*
 ### Jawaban
+Untuk melakukan *directory listing* maka pada file `/etc/apache2/sites-available/super.franky.C09.com.conf` ditambahkan konfigurasi sebagai berikut.
+```
+  <Directory /var/www/super.franky.C09/public/css>
+                Options +Indexes
+                IndexOptions Showforbidden
+                <FilesMatch "\.css$">
+                        Deny from all
+                </FilesMatch>
+        </Directory>
 
+        <Directory /var/www/super.franky.C09/public/images>
+                Options +Indexes +FollowSymLinks -Multiviews
+                AllowOverride All
+                IndexOptions Showforbidden
+        </Directory>
+
+        <Directory /var/www/super.franky.C09/public/js>
+                Options +Indexes
+                IndexOptions Showforbidden
+                <FilesMatch "\.js$">
+                        Deny from all
+                </FilesMatch>
+        </Directory>
+
+```
+Dimana di konfigurasi juga ditambahkan pembatasan akses agar file tidak bisa dibuka, sehingga hanya *directory listing* saja.
 # Nomor 12
 ### Soal
 *(12) Tidak hanya itu, Luffy juga menyiapkan error file 404.html pada folder /error untuk mengganti error kode pada apache.*
-
+### Jawaban
+Untuk menyiapkan itu maka dimasukan file 404.html terlebih dulu di direktori `/error`, Selanjutnya ditambahkan konfigurasi pada file `/etc/apache2/sites-available/super.franky.C09.com.conf` dengan `ErrorDocument 404 /error/404.html` dengan ini ketika kita mengakses file atau alamat yang tidak tersedia akan menampilkan file 404.html sebagai pesan error.
 # Nomor 13
 ### Soal
 *(13) Luffy juga meminta Nami untuk dibuatkan konfigurasi virtual host. Virtual host ini bertujuan untuk dapat mengakses file asset **www.super.franky.yyy.com/public/js** menjadi **www.super.franky.yyy.com/js**.*
