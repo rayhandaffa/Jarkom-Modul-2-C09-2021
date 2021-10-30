@@ -275,3 +275,7 @@ Gunakan `RedirectMatch` untuk melakukan _redirect_ url yang dimasukkan dengan ur
 ![17-2](img/17.2-super-franky-png.jpeg)
 
 ![17-3](img/17.3-franky-png.jpeg)
+
+# Kendala
+
+Terdapat kesulitan dalam memahami soal 17, sempat mengira bahwa _general.franky.C09.com_ yang melakukan redirect karena berkaitan dengan sebelumnya, namun di _super.franky.C09.com_. Kesulitan memahami regex yang digunakan karena sulit dipahami :).
